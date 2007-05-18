@@ -1,5 +1,5 @@
 # Derived from contrib/Makefile.in
-# $Id: Makefile 278 2007-05-04 23:34:07Z jilles $
+# $Id$
 # Makefile.config should define source and prefix
 include Makefile.config
 
