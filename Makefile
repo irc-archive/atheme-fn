@@ -31,7 +31,8 @@ LDFLAGS		+=  -Wl,-export-dynamic
 default: all
 
 SRCS = \
-	cs_access.c	\
+	cs_access.c		\
+	ns_extendchans.c	\
 	regnotice.c
 
 # To compile your own modules, add them to SRCS or make blegh.so
