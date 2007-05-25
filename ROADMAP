@@ -4,12 +4,12 @@
   [/] message "freenode is a service of ..." on registration
   [x] umode +e on grouped nicks
   [ ] nickserv/set_unfiltered
-  [ ] nickserv/extendchans
+  [x] nickserv/extendchans
   [ ] nickserv non-enforce recover/release?
   [ ] nickserv/set_master? (weakens identity!)
   [ ] nickserv/set_private? (should be smarter in what to show still)
   [ ] a way to deal with channel access lists
-  [ ] last used time on channel access entries?
+  [ ] last used time on channel access entries? (not so useful with roles)
   [ ] autodeop?
   [ ] chanserv unban only self?
   [ ] a way to allow nonopers to list channels by name pattern? (alis?)
