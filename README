@@ -3,6 +3,8 @@ These are freenode-specific modules for atheme-services.
 They are currently intended for atheme-services trunk,
 svn co http://svn.atheme.org/atheme/trunk atheme
 
+The ircd is hyperion as currently used by freenode (hyperion-1.0.2b(382)).
+
 To compile, first compile and install atheme-services. Then copy
 Makefile.config.example to Makefile.config and edit it, then make and make
 install.
