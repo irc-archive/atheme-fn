@@ -46,12 +46,15 @@ static void nick_reg_notice(void *vptr)
 
 static void chan_reg_notice(void *vptr)
 {
-	mychan_t *mc = vptr;
-	myuser_t *mu = mc->founder; /* XXX what if they're logged in twice */
+	hook_channel_req_t *hdata = vptr;
+	sourceinfo_t *si = hdata->si;
 
-	myuser_notice(chansvs.nick, mu, " ");
-	myuser_notice(chansvs.nick, mu, "Channel guidelines can be found on the freenode website");
-	myuser_notice(chansvs.nick, mu, "(http://freenode.net/channel_guidelines.shtml).");
-	myuser_notice(chansvs.nick, mu, "Freenode is a service of Peer-Directed Projects Center, an");
-	myuser_notice(chansvs.nick, mu, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
+	if (si == NULL)
+		return;
+
+	command_success_nodata(si, " ");
+	command_success_nodata(si, "Channel guidelines can be found on the freenode website");
+	command_success_nodata(si, "(http://freenode.net/channel_guidelines.shtml).");
+	command_success_nodata(si, "Freenode is a service of Peer-Directed Projects Center, an");
+	command_success_nodata(si, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
 }
