@@ -1,7 +1,7 @@
 [x] Theia database loader
 [ ] Testing with large amounts of users, channels, etc
 [ ] Missing features
-  [/] message "freenode is a service of ..." on registration
+  [x] message "freenode is a service of ..." on registration
   [x] umode +e on grouped nicks
   [ ] nickserv/set_unfiltered
   [x] nickserv/extendchans
