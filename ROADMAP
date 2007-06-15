@@ -8,6 +8,9 @@
   [ ] nickserv non-enforce recover/release?
   [ ] nickserv/set_master? (weakens identity!)
   [ ] nickserv/set_private? (should be smarter in what to show still)
+  [x] IP matching for akicks
+  [x] +d matching for /cs unban
+  [ ] ban forward tracking and matching for /cs unban
   [ ] a way to deal with channel access lists
   [ ] last used time on channel access entries? (not so useful with roles)
   [ ] autodeop?
