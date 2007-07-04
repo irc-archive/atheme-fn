@@ -1,7 +1,7 @@
 These are freenode-specific modules for atheme-services.
 
 They are currently intended for atheme-services trunk,
-hg clone http://hg.atheme.org/atheme
+hg clone http://hg.atheme-project.org/atheme
 
 The ircd is hyperion as currently used by freenode (hyperion-1.0.2b(382)).
 
