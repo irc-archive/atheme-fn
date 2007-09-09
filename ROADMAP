@@ -26,6 +26,8 @@
   [ ] a command that allows helpers to drop nicks "expired" according to
       the policy
   [ ] look into accountability of channel ops towards channel ops
+  [ ] *!*@freenode/staff/* entries outside network channels seem more like
+      some sort of flag, not a regular access entry
 
 Things that will (most likely) go away:
 - nick linking will be replaced by nick grouping
