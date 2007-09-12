@@ -22,7 +22,7 @@ MODDIR		= ${exec_prefix}
 SHAREDIR	= ${prefix}
 MKDEP		= gcc -MM -DPREFIX=\"${prefix}\" -I${source}/include -I${source}/libmowgli/src/libmowgli
 PICFLAGS	= -fPIC -DPIC -shared
-CFLAGS		= -g -O2  -Wpointer-arith -Wimplicit -Wnested-externs -Wcast-align -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -W -Wno-unused -Wshadow -Wmissing-noreturn -Wundef -Wpacked -Wnested-externs -Wbad-function-cast -Wredundant-decls -Wfloat-equal -Wformat=2 -Wdisabled-optimization -pedantic  -DPREFIX=\"${prefix}\" -DMODDIR=\"${MODDIR}\" -DSHAREDIR=\"${prefix}\" -DSYSCONFDIR=\"${prefix}/etc\" -DLOGDIR=\"var\" -DRUNDIR=\"var\" -DDATADIR=\"etc\" -I${source}/include -I${source}/libmowgli/src/libmowgli
+CFLAGS		= -g -O2  -Wpointer-arith -Wimplicit -Wnested-externs -Wcast-align -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -W -Wno-unused -Wshadow -Wmissing-noreturn -Wundef -Wpacked -Wnested-externs -Wbad-function-cast -Wredundant-decls -Wfloat-equal -Wformat=2 -Wdisabled-optimization -DPREFIX=\"${prefix}\" -DMODDIR=\"${MODDIR}\" -DSHAREDIR=\"${prefix}\" -DSYSCONFDIR=\"${prefix}/etc\" -DLOGDIR=\"var\" -DRUNDIR=\"var\" -DDATADIR=\"etc\" -I${source}/include -I${source}/libmowgli/src/libmowgli
 
 LIBS		=  -lcrypt -lssl -lcrypto
 LDFLAGS		+=  -Wl,-export-dynamic
