@@ -34,6 +34,7 @@ SRCS = \
 	cs_access.c		\
 	ns_extendchans.c	\
 	ns_regain.c	\
+	oftc-hybrid.c	\
 	regnotice.c
 
 # To compile your own modules, add them to SRCS or make blegh.so
