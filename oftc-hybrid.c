@@ -1073,7 +1073,7 @@ static void m_capab(sourceinfo_t *si, int parc, char *parv[])
 			slog(LG_DEBUG, "m_capab(): uplink does Hybrid-style topic bursting, using if appropriate.");
 			use_tburst = TRUE;
 		}
-		else if (!irccasecmp(p, "TB"))
+		if (!irccasecmp(p, "TB"))
 		{
 			slog(LG_DEBUG, "m_capab(): uplink does topic bursting, using if appropriate.");
 			use_tb = TRUE;
