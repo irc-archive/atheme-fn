@@ -66,6 +66,9 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 		lines = linesv = 0;
 		while (fgets(str, sizeof str, in) != NULL)
 		{
+			p = strchr(str, '\n');
+			if (p != NULL)
+				*p = '\0';
 			lines++;
 			p = *str == '[' ? strchr(str, ']') : NULL;
 			if (p == NULL)
