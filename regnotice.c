@@ -2,7 +2,7 @@
  * Copyright (c) 2007 Jilles Tjoelker
  * Rights to this code are as documented in doc/LICENSE.
  *
- * freenode on-registration notices
+ * freenode on-registration notices and default settings
  *
  * $Id$
  */
@@ -24,7 +24,7 @@ void _modinit(module_t *m)
 	hook_add_event("user_register");
 	hook_add_hook("user_register", nick_reg_notice);
 	hook_add_event("channel_register");
-	hook_add_hook("channel_register", chan_reg_notice);
+	hook_add_hook_first("channel_register", chan_reg_notice);
 }
 
 void _moddeinit(void)
@@ -48,8 +48,9 @@ static void chan_reg_notice(void *vptr)
 {
 	hook_channel_req_t *hdata = vptr;
 	sourceinfo_t *si = hdata->si;
+	mychan_t *mc = hdata->mc;
 
-	if (si == NULL)
+	if (si == NULL || mc == NULL)
 		return;
 
 	command_success_nodata(si, " ");
@@ -57,4 +58,8 @@ static void chan_reg_notice(void *vptr)
 	command_success_nodata(si, "(http://freenode.net/channel_guidelines.shtml).");
 	command_success_nodata(si, "Freenode is a service of Peer-Directed Projects Center, an");
 	command_success_nodata(si, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
+
+	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
+	mc->mlock_off |= CMODE_SEC;
+	chanacs_change_simple(mc, si->smu, NULL, 0, CA_AUTOOP);
 }
