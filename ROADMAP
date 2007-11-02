@@ -7,7 +7,7 @@
   [x] nickserv/extendchans
   [ ] nickserv non-enforce recover/release?
   [ ] nickserv/set_master? (weakens identity!)
-  [ ] nickserv/set_private? (should be smarter in what to show still)
+  [x] nickserv/set_private? (should be smarter in what to show still)
   [x] IP matching for akicks
   [x] +d matching for /cs unban
   [ ] ban forward tracking and matching for /cs unban
