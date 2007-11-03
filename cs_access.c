@@ -118,7 +118,19 @@ static void access_list(sourceinfo_t *si, mychan_t *mc, int parc, char *parv[])
 	int operoverride = 0;
 
 	/* Copied from modules/chanserv/flags.c */
-	/* Note: This overrides the normal need of +A access */
+	/* Note: This overrides the normal need of +A access unless private */
+	if (use_channel_private && mc->flags & MC_PRIVATE &&
+			!chanacs_source_has_flag(mc, si, CA_ACLVIEW))
+	{
+		if (has_priv(si, PRIV_CHAN_AUSPEX))
+			operoverride = 1;
+		else
+		{
+			command_fail(si, fault_noprivs, _("You are not authorized to perform this operation."));
+			return;
+		}
+	}
+
 	command_success_nodata(si, _("Entry Nickname/Host          Flags"));
 	command_success_nodata(si, "----- ---------------------- -----");
 
