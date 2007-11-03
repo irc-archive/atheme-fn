@@ -17,7 +17,7 @@
   [/] chanserv unban only self? (code allows both, decision pending)
   [x] a way to allow nonopers to list channels by name pattern? (alis?)
   [ ] chanserv/op|voice on multiple?
-  [ ] chanserv/set_private? (should be smarter in what to show still)
+  [x] chanserv/set_private? (should be smarter in what to show still)
   [ ] chanserv/clear_(ops|voices|modes)? (compare chanserv/recover)
   [ ] memoserv/reply?
   [/] operserv/greplog
