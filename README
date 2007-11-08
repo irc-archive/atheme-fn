@@ -12,6 +12,7 @@ install.
 You can then load the modules using atheme.conf lines like
 loadmodule "modules/freenode/regnotice.so";
 loadmodule "modules/freenode/ns_extendchans.so";
+loadmodule "modules/freenode/ns_set_unfiltered.so";
 loadmodule "modules/freenode/cs_access.so";
 loadmodule "modules/freenode/os_greplog.so";
 or the OperServ MODLOAD command.

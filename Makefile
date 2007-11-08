@@ -34,6 +34,7 @@ SRCS = \
 	cs_access.c		\
 	ns_extendchans.c	\
 	ns_regain.c	\
+	ns_set_unfiltered.c	\
 	os_greplog.c	\
 	oftc-hybrid.c	\
 	regnotice.c
