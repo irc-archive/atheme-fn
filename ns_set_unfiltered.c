@@ -45,8 +45,6 @@ void _moddeinit(void)
 
 static void do_set_unfiltered(user_t *u, boolean_t enable)
 {
-	char luhost[BUFSIZE];
-
 	sts(":%s MODE %s +*", nicksvs.nick, nicksvs.nick);
 	sts(":%s MODE %s %c6", nicksvs.nick, u->nick, enable ? '+' : '-');
 	sts(":%s MODE %s -*", nicksvs.nick, nicksvs.nick);
@@ -56,7 +54,6 @@ static void do_set_unfiltered_all(myuser_t *mu, boolean_t enable)
 {
 	node_t *n;
 	user_t *u;
-	char luhost[BUFSIZE];
 
 	LIST_FOREACH(n, mu->logins.head)
 	{

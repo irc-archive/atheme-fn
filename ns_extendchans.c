@@ -52,8 +52,6 @@ void _moddeinit(void)
 
 static void do_extendchans(user_t *u, boolean_t enable)
 {
-	char luhost[BUFSIZE];
-
 	sts(":%s MODE %s +*", nicksvs.nick, nicksvs.nick);
 	sts(":%s MODE %s %cu", nicksvs.nick, u->nick, enable ? '+' : '-');
 	sts(":%s MODE %s -*", nicksvs.nick, nicksvs.nick);
@@ -63,7 +61,6 @@ static void do_extendchans_all(myuser_t *mu, boolean_t enable)
 {
 	node_t *n;
 	user_t *u;
-	char luhost[BUFSIZE];
 
 	LIST_FOREACH(n, mu->logins.head)
 	{
@@ -75,9 +72,7 @@ static void do_extendchans_all(myuser_t *mu, boolean_t enable)
 /* EXTENDCHANS <nick> [ON|OFF] */
 static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[])
 {
-	char *newstate = parv[1];
 	myuser_t *mu;
-	char *p;
 
 	if (parc < 1)
 	{
