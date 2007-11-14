@@ -3,9 +3,9 @@
 [ ] Missing features
   [x] message "freenode is a service of ..." on registration
   [x] umode +e on grouped nicks
-  [ ] nickserv/set_unfiltered
+  [x] nickserv/set_unfiltered (not needed)
   [x] nickserv/extendchans
-  [ ] nickserv non-enforce recover/release?
+  [ ] nickserv non-enforce recover/release? (or enforce, add svshold to ircd?)
   [ ] nickserv/set_master? (weakens identity!)
   [x] nickserv/set_private? (should be smarter in what to show still)
   [x] IP matching for akicks
