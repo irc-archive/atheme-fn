@@ -20,7 +20,7 @@ list_t *os_cmdtree, *os_helptree;
 
 static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t os_greplog = { "GREPLOG", N_("Searches through the log file."), PRIV_ADMIN, 2, os_cmd_greplog };
+command_t os_greplog = { "GREPLOG", N_("Searches through the log file."), PRIV_CHAN_AUSPEX, 2, os_cmd_greplog };
 
 void _modinit(module_t *m)
 {
@@ -47,6 +47,13 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 	FILE *in;
 	char str[1024];
 	char *p, *q;
+
+	/* require both user and channel auspex */
+	if (!has_priv(si, PRIV_USER_AUSPEX))
+	{
+		command_fail(si, fault_noprivs, _("You do not have %s privilege."), PRIV_USER_AUSPEX);
+		return;
+	}
 
 	if (parc < 2)
 	{
