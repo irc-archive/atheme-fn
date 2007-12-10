@@ -25,6 +25,8 @@ static void extendchans_on_identify(void *vptr);
 static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[]);
 static void ns_cmd_listextendchans(sourceinfo_t *si, int parc, char *parv[]);
 
+static void show_extendchans(void *vdata);
+
 command_t ns_extendchans = { "EXTENDCHANS", N_("Enables or disables extendchans for a user."), PRIV_USER_ADMIN, 2, ns_cmd_extendchans };
 command_t ns_listextendchans = { "LISTEXTENDCHANS", N_("Lists accounts with extendchans enabled."), PRIV_USER_AUSPEX, 1, ns_cmd_listextendchans };
 
@@ -35,6 +37,8 @@ void _modinit(module_t *m)
 
 	hook_add_event("user_identify");
 	hook_add_hook("user_identify", extendchans_on_identify);
+	hook_add_event("user_info");
+	hook_add_hook("user_info", show_extendchans);
 	command_add(&ns_extendchans, ns_cmdtree);
 	command_add(&ns_listextendchans, ns_cmdtree);
 	help_addentry(ns_helptree, "EXTENDCHANS", "help/nickserv/extendchans", NULL);
@@ -44,6 +48,7 @@ void _modinit(module_t *m)
 void _moddeinit(void)
 {
 	hook_del_hook("user_identify", extendchans_on_identify);
+	hook_del_hook("user_info", show_extendchans);
 	command_delete(&ns_extendchans, ns_cmdtree);
 	command_delete(&ns_listextendchans, ns_cmdtree);
 	help_delentry(ns_helptree, "EXTENDCHANS");
@@ -67,6 +72,15 @@ static void do_extendchans_all(myuser_t *mu, boolean_t enable)
 		u = n->data;
 		do_extendchans(u, enable);
 	}
+}
+
+static void show_extendchans(void *vdata)
+{
+	hook_user_req_t *hdata = vdata;
+
+	if ((hdata->mu == hdata->si->smu || has_priv(hdata->si, PRIV_USER_AUSPEX)) &&
+			metadata_find(hdata->mu, METADATA_USER, "private:extendchans"))
+		command_success_nodata(hdata->si, "%s has extendchans", hdata->mu->name);
 }
 
 /* EXTENDCHANS <nick> [ON|OFF] */
