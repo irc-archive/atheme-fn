@@ -58,6 +58,19 @@ static void chan_reg_notice(void *vptr)
 	command_success_nodata(si, "(http://freenode.net/channel_guidelines.shtml).");
 	command_success_nodata(si, "Freenode is a service of Peer-Directed Projects Center, an");
 	command_success_nodata(si, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
+	if (mc->name[1] != '#')
+	{
+		command_success_nodata(si, "This is a primary namespace channel as per\n"
+				"http://freenode.net/policy.shtml#primarychannels");
+		command_success_nodata(si, "If you do not own this name, please consider\n"
+				"dropping %s and using #%s instead.",
+				mc->name, mc->name);
+	}
+	else
+	{
+		command_success_nodata(si, "This is an \"about\" channel as per");
+		command_success_nodata(si, "http://freenode.net/policy.shtml#topicalchannels");
+	}
 
 	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
 	mc->mlock_off |= CMODE_SEC;
