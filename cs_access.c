@@ -165,7 +165,7 @@ static void cs_cmd_access(sourceinfo_t *si, int parc, char *parv[])
 	mychan_t *mc;
 	char killit[] = "-*";
 	char deftemplate[] = "OP";
-	char defaccess[] = "+votirA";
+	char defaccess[] = "=votirA";
 
 	if (parc < 2)
 	{
