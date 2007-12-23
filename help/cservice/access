@@ -25,7 +25,7 @@ The DEL subcommand removes a user from the access list.
 Syntax: ACCESS <#channel> DEL <nickname>
 
 Examples:
-    /msg &nick& ACCESS #foo
+    /msg &nick& ACCESS #foo LIST
     /msg &nick& ACCESS #foo ADD bar OP
     /msg &nick& ACCESS #foo DEL bar
 
