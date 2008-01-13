@@ -5,22 +5,19 @@
   [x] umode +e on grouped nicks
   [x] nickserv/set_unfiltered (not needed)
   [x] nickserv/extendchans
-  [ ] nickserv non-enforce recover/release? (or enforce, add svshold to ircd?)
-  [x] nickserv/set_master? (weakens identity!)
-  [x] nickserv/set_private? (should be smarter in what to show still)
+  [ ] nickserv non-enforce recover/release? (or enforce)
+  [x] nickserv/set_accountname (weakens identity!)
+  [x] nickserv/set_private (should be smarter in what to show still)
   [x] IP matching for akicks
   [x] +d matching for /cs unban
   [x] ban forward tracking and matching for /cs unban
-  [ ] a way to deal with channel access lists
+  [x] a way to deal with channel access lists
   [ ] last used time on channel access entries? (not so useful with roles)
-  [ ] autodeop?
-  [/] chanserv unban only self? (code allows both, decision pending)
+  [x] chanserv unban only self? (code allows both, decision pending)
   [x] a way to allow nonopers to list channels by name pattern? (alis?)
-  [ ] chanserv/op|voice on multiple?
   [ ] chanserv/op|voice on -nick?
   [x] chanserv/set_private? (should be smarter in what to show still)
   [ ] chanserv/clear_(ops|voices|modes)? (compare chanserv/recover)
-  [ ] memoserv/reply?
   [/] operserv/greplog
 [ ] New features
   [ ] group contact support
@@ -32,6 +29,9 @@
       some sort of flag, not a regular access entry
 
 Things that will (most likely) go away:
+- memoserv/reply
+- chanserv/op|voice on multiple
+- autodeop
 - nick linking will be replaced by nick grouping
 - nonoper nickserv/list
 - nickserv/set_automask
