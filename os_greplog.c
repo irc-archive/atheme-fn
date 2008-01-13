@@ -47,6 +47,7 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 	FILE *in;
 	char str[1024];
 	char *p, *q;
+	const char *commands_log = "var/commands.log"; /* XXX */
 
 	/* require both user and channel auspex */
 	if (!has_priv(si, PRIV_USER_AUSPEX))
@@ -67,7 +68,7 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 
 	snoop("GREPLOG: \2%s\2 \2%s\2 by \2%s\2", service, pattern, get_oper_name(si));
 
-	in = fopen(log_path, "r");
+	in = fopen(commands_log, "r");
 	if (in != NULL)
 	{
 		lines = linesv = 0;
