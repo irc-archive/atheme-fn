@@ -89,9 +89,8 @@ void ns_cmd_regain(sourceinfo_t *si, int parc, char *parv[])
 	{
 		logcommand(si, CMDLOG_DO, "REGAIN %s!%s@%s", target_u->nick, target_u->user, target_u->vhost);
 
-		skill(nicksvs.nick, target, "REGAIN command used by %s",
+		kill_user(si->service->me, target_u, "REGAIN command used by %s",
 				si->su != NULL && !strcmp(si->su->user, target_u->user) && !strcmp(si->su->vhost, target_u->vhost) ? si->su->nick : get_source_mask(si));
-		user_delete(target_u);
 
 		command_success_nodata(si, _("\2%s\2 has been regained."), target);
 		fnc_sts(si->service->me, si->su, target, FNC_REGAIN);
