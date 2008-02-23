@@ -28,7 +28,7 @@ void _modinit(module_t *m)
 	MODULE_USE_SYMBOL(os_helptree, "operserv/main", "os_helptree");
 
 	command_add(&os_greplog, os_cmdtree);
-	help_addentry(os_helptree, "GREPLOG", "help/operserv/greplog", NULL);
+	help_addentry(os_helptree, "GREPLOG", "help/oservice/greplog", NULL);
 }
 
 void _moddeinit(void)
