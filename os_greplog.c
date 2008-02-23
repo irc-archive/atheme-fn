@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2007 Jilles Tjoelker
+ * Copyright (c) 2007-2008 Jilles Tjoelker
  * Rights to this code are as documented in doc/LICENSE.
  *
- * Searches through the log file.
+ * Searches through the logs.
  *
  * $Id$
  */
@@ -20,7 +20,7 @@ list_t *os_cmdtree, *os_helptree;
 
 static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[]);
 
-command_t os_greplog = { "GREPLOG", N_("Searches through the log file."), PRIV_CHAN_AUSPEX, 2, os_cmd_greplog };
+command_t os_greplog = { "GREPLOG", N_("Searches through the logs."), PRIV_CHAN_AUSPEX, 3, os_cmd_greplog };
 
 void _modinit(module_t *m)
 {
@@ -42,12 +42,16 @@ void _moddeinit(void)
 /* GREPLOG <service> <mask> */
 static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 {
-	const char *service, *pattern;
-	int matches = 0, lines, linesv;
+	const char *service, *pattern, *baselog;
+	int maxdays, matches = -1, day, days, lines, linesv;
 	FILE *in;
 	char str[1024];
 	char *p, *q;
 	const char *commands_log = "var/commands.log"; /* XXX */
+	const char *account_log = "var/account.log"; /* XXX */
+	char logfile[256];
+	time_t t;
+	struct tm tm;
 
 	/* require both user and channel auspex */
 	if (!has_priv(si, PRIV_USER_AUSPEX))
@@ -59,18 +63,49 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 	if (parc < 2)
 	{
 		command_fail(si, fault_needmoreparams, STR_INSUFFICIENT_PARAMS, "GREPLOG");
-		command_fail(si, fault_needmoreparams, _("Syntax: GREPLOG <service> <pattern>"));
+		command_fail(si, fault_needmoreparams, _("Syntax: GREPLOG <service> <pattern> [days]"));
 		return;
 	}
 
 	service = parv[0];
 	pattern = parv[1];
 
+	if (parc >= 3)
+	{
+		days = atoi(parv[2]);
+		maxdays = !strcmp(service, "*") ? 120 : 30;
+		if (days < 0 || days > maxdays)
+		{
+			command_fail(si, fault_badparams, _("Too many days, maximum is %d."), maxdays);
+			return;
+		}
+	}
+	else
+		days = 0;
+
 	snoop("GREPLOG: \2%s\2 \2%s\2 by \2%s\2", service, pattern, get_oper_name(si));
 
-	in = fopen(commands_log, "r");
-	if (in != NULL)
+	for (day = 0; day <= days; day++)
 	{
+		baselog = !strcmp(service, "*") ? account_log : commands_log;
+		if (day == 0)
+			strlcpy(logfile, baselog, sizeof logfile);
+		else
+		{
+			t = CURRTIME - day * 86400;
+			tm = *gmtime(&t);
+			snprintf(logfile, sizeof logfile, "%s.%04u%02u%02u",
+					baselog, tm.tm_year + 1900,
+					tm.tm_mon + 1, tm.tm_mday);
+		}
+		in = fopen(logfile, "r");
+		if (in == NULL)
+		{
+			command_success_nodata(si, "Failed to open log file %s", logfile);
+			continue;
+		}
+		if (matches == -1)
+			matches = 0;
 		lines = linesv = 0;
 		while (fgets(str, sizeof str, in) != NULL)
 		{
@@ -89,7 +124,7 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 				continue;
 			linesv++;
 			*q = '\0';
-			if (strcasecmp(service, p))
+			if (strcmp(service, "*") && strcasecmp(service, p))
 				continue;
 			*q++ = ' ';
 			if (match(pattern, q))
@@ -108,11 +143,8 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 		fclose(in);
 		if (matches == 0 && lines > linesv && lines > 0)
 			command_success_nodata(si, "Log file may be corrupted, %d/%d unexpected lines", lines - linesv, lines);
-	}
-	else
-	{
-		command_fail(si, fault_nosuch_target, "Failed to open log file");
-		matches = -1;
+		if (matches >= MAXMATCHES)
+			break;
 	}
 
 	logcommand(si, CMDLOG_ADMIN, "GREPLOG %s %s (%d matches)", service, pattern, matches);
