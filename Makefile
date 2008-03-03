@@ -41,12 +41,15 @@ SRCS = \
 # To compile your own modules, add them to SRCS or make blegh.so
 
 OBJS = ${SRCS:.c=.so}
+OTHER = fn-rotatelogs
 
-all: ${OBJS}
+all: ${OBJS} ${OTHER}
 
 install:
 	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/freenode
 	${INSTALL} -m 755 *.so $(DESTDIR)${MODDIR}/modules/freenode
+	${INSTALL} -m 755 -d $(DESTDIR)${bindir}
+	${INSTALL} -m 755 fn-rotatelogs $(DESTDIR)${bindir}
 	$(INSTALL) -m 755 -d $(DESTDIR)$(SHAREDIR)/help
 	(cd help; for i in *; do \
 		[ -f $$i ] && $(INSTALL) -m 644 $$i $(DESTDIR)$(SHAREDIR)/help; \
@@ -64,6 +67,9 @@ install:
 
 .c.so:
 	${CC} ${PICFLAGS} ${CPPFLAGS} ${CFLAGS} $< -o $@
+
+fn-rotatelogs: fn-rotatelogs.in
+	sed -e 's!@prefix@!${prefix}!g' fn-rotatelogs.in > fn-rotatelogs
 
 .PHONY: depend clean distclean
 # This sed command sucks but I don't know a better way -- jilles
