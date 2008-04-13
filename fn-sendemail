@@ -1,0 +1,16 @@
+#!/bin/sh
+
+server="$1"
+to="$2"
+if [ -z "$to" ]; then
+	exit 1
+fi
+
+subject="No subject"
+while read -r field rest; do
+	case "$field" in
+		"") break ;;
+		Subject:) subject="$rest" ;;
+	esac
+done
+ssh "$server" mail -s "$subject" "$to"

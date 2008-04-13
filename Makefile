@@ -41,7 +41,7 @@ SRCS = \
 # To compile your own modules, add them to SRCS or make blegh.so
 
 OBJS = ${SRCS:.c=.so}
-OTHER = fn-rotatelogs
+OTHER = fn-rotatelogs fn-sendemail
 
 all: ${OBJS} ${OTHER}
 
@@ -49,7 +49,7 @@ install:
 	${INSTALL} -m 755 -d $(DESTDIR)${MODDIR}/modules/freenode
 	${INSTALL} -m 755 *.so $(DESTDIR)${MODDIR}/modules/freenode
 	${INSTALL} -m 755 -d $(DESTDIR)${bindir}
-	${INSTALL} -m 755 fn-rotatelogs $(DESTDIR)${bindir}
+	${INSTALL} -m 755 ${OTHER} $(DESTDIR)${bindir}
 	$(INSTALL) -m 755 -d $(DESTDIR)$(SHAREDIR)/help
 	(cd help; for i in *; do \
 		[ -f $$i ] && $(INSTALL) -m 644 $$i $(DESTDIR)$(SHAREDIR)/help; \
