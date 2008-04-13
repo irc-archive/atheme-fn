@@ -13,4 +13,7 @@ while read -r field rest; do
 		Subject:) subject="$rest" ;;
 	esac
 done
-ssh "$server" mail -s "$subject" "$to"
+case "$subject" in
+	*"'"*) subject="No subject"
+esac
+ssh "$server" mail -s "'$subject'" "$to"
