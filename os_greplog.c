@@ -43,7 +43,7 @@ void _moddeinit(void)
 static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 {
 	const char *service, *pattern, *baselog;
-	int maxdays, matches = -1, day, days, lines, linesv;
+	int maxdays, matches = -1, matches1, day, days, lines, linesv;
 	FILE *in;
 	char str[1024];
 	char *p, *q;
@@ -52,6 +52,8 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 	char logfile[256];
 	time_t t;
 	struct tm tm;
+	list_t loglines = { NULL, NULL, 0 };
+	node_t *n, *tn;
 
 	/* require both user and channel auspex */
 	if (!has_priv(si, PRIV_USER_AUSPEX))
@@ -106,6 +108,7 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 		}
 		if (matches == -1)
 			matches = 0;
+		matches1 = matches;
 		lines = linesv = 0;
 		while (fgets(str, sizeof str, in) != NULL)
 		{
@@ -130,21 +133,33 @@ static void os_cmd_greplog(sourceinfo_t *si, int parc, char *parv[])
 			if (match(pattern, q))
 				continue;
 			matches++;
-			command_success_nodata(si, "[%d] %s", matches, str);
-			/* Do not remove, it stops inflooping when matching
-			 * the NOTICE from raw traffic logging
-			 */
-			if (matches >= MAXMATCHES)
+			node_add_head(sstrdup(str), node_create(), &loglines);
+			if (matches > MAXMATCHES)
 			{
-				command_success_nodata(si, "Too many matches, halting search");
+				n = loglines.tail;
+				node_del(n, &loglines);
+				free(n->data);
+				node_free(n);
 				break;
 			}
 		}
 		fclose(in);
+		matches = matches1;
+		LIST_FOREACH_SAFE(n, tn, loglines.head)
+		{
+			p = n->data;
+			matches++;
+			command_success_nodata(si, "[%d] %s", matches, p);
+			free(p);
+			node_free(n);
+		}
 		if (matches == 0 && lines > linesv && lines > 0)
 			command_success_nodata(si, "Log file may be corrupted, %d/%d unexpected lines", lines - linesv, lines);
 		if (matches >= MAXMATCHES)
+		{
+			command_success_nodata(si, "Too many matches, halting search");
 			break;
+		}
 	}
 
 	logcommand(si, CMDLOG_ADMIN, "GREPLOG %s %s (%d matches)", service, pattern, matches);
