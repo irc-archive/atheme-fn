@@ -79,7 +79,7 @@ static void show_extendchans(void *vdata)
 	hook_user_req_t *hdata = vdata;
 
 	if ((hdata->mu == hdata->si->smu || has_priv(hdata->si, PRIV_USER_AUSPEX)) &&
-			metadata_find(hdata->mu, METADATA_USER, "private:extendchans"))
+			metadata_find(hdata->mu, "private:extendchans"))
 		command_success_nodata(hdata->si, "%s has extendchans", hdata->mu->name);
 }
 
@@ -105,14 +105,14 @@ static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[])
 	if (parc == 1)
 	{
 		command_success_nodata(si, "ExtendChans is \2%s\2 for %s",
-				metadata_find(mu, METADATA_USER, "private:extendchans") ? "ON" : "OFF",
+				metadata_find(mu, "private:extendchans") ? "ON" : "OFF",
 				mu->name);
 		return;
 	}
 
 	if (!strcasecmp(parv[1], "OFF"))
 	{
-		metadata_delete(mu, METADATA_USER, "private:extendchans");
+		metadata_delete(mu, "private:extendchans");
 		command_success_nodata(si, _("Disabled extendchans for \2%s\2."), mu->name);
 		snoop("EXTENDCHANS:OFF: \2%s\2 by \2%s\2", mu->name, get_oper_name(si));
 		logcommand(si, CMDLOG_ADMIN, "EXTENDCHANS %s OFF", mu->name);
@@ -120,7 +120,7 @@ static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[])
 	}
 	else if (!strcasecmp(parv[1], "ON"))
 	{
-		metadata_add(mu, METADATA_USER, "private:extendchans", "1");
+		metadata_add(mu, "private:extendchans", "1");
 		command_success_nodata(si, _("Enabled extendchans for \2%s\2."),
 				mu->name);
 		snoop("EXTENDCHANS:ON: \2%s\2 by \2%s\2", mu->name, get_oper_name(si));
@@ -149,7 +149,7 @@ static void ns_cmd_listextendchans(sourceinfo_t *si, int parc, char *parv[])
 	snoop("LISTEXTENDCHANS: \2%s\2 by \2%s\2", pattern, get_oper_name(si));
 	MOWGLI_PATRICIA_FOREACH(mu, &state, mulist)
 	{
-		md = metadata_find(mu, METADATA_USER, "private:extendchans");
+		md = metadata_find(mu, "private:extendchans");
 		if (md == NULL)
 			continue;
 		if (!match(pattern, mu->name))
@@ -173,7 +173,7 @@ static void extendchans_on_identify(void *vptr)
 	myuser_t *mu = u->myuser;
 	metadata_t *md;
 
-	if (!(md = metadata_find(mu, METADATA_USER, "private:extendchans")))
+	if (!(md = metadata_find(mu, "private:extendchans")))
 		return;
 
 	do_extendchans(u, TRUE);

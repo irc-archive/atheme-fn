@@ -67,7 +67,7 @@ static const char *get_template_name(mychan_t *mc, unsigned int level)
 	char ss[40];
 	static char flagname[400];
 
-	md = metadata_find(mc, METADATA_CHANNEL, "private:templates");
+	md = metadata_find(mc, "private:templates");
 	if (md != NULL)
 	{
 		p = md->value;
@@ -141,7 +141,7 @@ static void access_list(sourceinfo_t *si, mychan_t *mc, int parc, char *parv[])
 		if (ca->level == CA_AKICK)
 			continue;
 		str1 = get_template_name(mc, ca->level);
-		str2 = ca->ts ? time_ago(ca->ts) : "?";
+		str2 = ca->tmodified ? time_ago(ca->tmodified) : "?";
 		if (str1 != NULL)
 			command_success_nodata(si, _("%-5d %-22s %s (%s) [modified %s ago]"), i, ca->myuser ? ca->myuser->name : ca->host, bitmask_to_flags(ca->level, chanacs_flags), str1,
 				str2);

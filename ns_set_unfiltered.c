@@ -83,22 +83,22 @@ static void ns_cmd_set_unfiltered(sourceinfo_t *si, int parc, char *parv[])
 
 	if (strcasecmp(setting, "ON") == 0)
 	{
-		if ((md = metadata_find(si->smu, METADATA_USER, "private:unfiltered")) != NULL)
+		if ((md = metadata_find(si->smu, "private:unfiltered")) != NULL)
 		{
 			command_fail(si, fault_nochange, _("UNFILTERED is already enabled."));
 		}
 		else
 		{
-			metadata_add(si->smu, METADATA_USER, "private:unfiltered", "1");
+			metadata_add(si->smu, "private:unfiltered", "1");
 			command_success_nodata(si, _("UNFILTERED is now enabled."));
 		}
 		do_set_unfiltered_all(si->smu, TRUE);
 	}
 	else if (strcasecmp(setting, "OFF") == 0)
 	{
-		if ((md = metadata_find(si->smu, METADATA_USER, "private:unfiltered")) != NULL)
+		if ((md = metadata_find(si->smu, "private:unfiltered")) != NULL)
 		{
-			metadata_delete(si->smu, METADATA_USER, "private:unfiltered");
+			metadata_delete(si->smu, "private:unfiltered");
 			command_success_nodata(si, _("UNFILTERED is now disabled."));
 		}
 		else
@@ -120,7 +120,7 @@ static void set_unfiltered_on_identify(void *vptr)
 	myuser_t *mu = u->myuser;
 	metadata_t *md;
 
-	if (!(md = metadata_find(mu, METADATA_USER, "private:unfiltered")))
+	if (!(md = metadata_find(mu, "private:unfiltered")))
 		return;
 
 	do_set_unfiltered(u, TRUE);
