@@ -13,7 +13,7 @@
 
 DECLARE_MODULE_V1
 (
-	"freenode/ns_set_unfiltered", FALSE, _modinit, _moddeinit,
+	"freenode/ns_set_unfiltered", false, _modinit, _moddeinit,
 	"$Id$",
 	"freenode <http://www.freenode.net>"
 );
@@ -43,14 +43,14 @@ void _moddeinit(void)
 	help_delentry(ns_helptree, "SET UNFILTERED");
 }
 
-static void do_set_unfiltered(user_t *u, boolean_t enable)
+static void do_set_unfiltered(user_t *u, bool enable)
 {
 	sts(":%s MODE %s +*", nicksvs.nick, nicksvs.nick);
 	sts(":%s MODE %s %c6", nicksvs.nick, u->nick, enable ? '+' : '-');
 	sts(":%s MODE %s -*", nicksvs.nick, nicksvs.nick);
 }
 
-static void do_set_unfiltered_all(myuser_t *mu, boolean_t enable)
+static void do_set_unfiltered_all(myuser_t *mu, bool enable)
 {
 	node_t *n;
 	user_t *u;
@@ -92,7 +92,7 @@ static void ns_cmd_set_unfiltered(sourceinfo_t *si, int parc, char *parv[])
 			metadata_add(si->smu, "private:unfiltered", "1");
 			command_success_nodata(si, _("UNFILTERED is now enabled."));
 		}
-		do_set_unfiltered_all(si->smu, TRUE);
+		do_set_unfiltered_all(si->smu, true);
 	}
 	else if (strcasecmp(setting, "OFF") == 0)
 	{
@@ -105,7 +105,7 @@ static void ns_cmd_set_unfiltered(sourceinfo_t *si, int parc, char *parv[])
 		{
 			command_fail(si, fault_nochange, _("UNFILTERED is already disabled."));
 		}
-		do_set_unfiltered_all(si->smu, FALSE);
+		do_set_unfiltered_all(si->smu, false);
 	}
 	else
 	{
@@ -123,7 +123,7 @@ static void set_unfiltered_on_identify(void *vptr)
 	if (!(md = metadata_find(mu, "private:unfiltered")))
 		return;
 
-	do_set_unfiltered(u, TRUE);
+	do_set_unfiltered(u, true);
 }
 
 /* vim:cinoptions=>s,e0,n0,f0,{0,}0,^0,=s,ps,t0,c3,+s,(2s,us,)20,*30,gs,hs

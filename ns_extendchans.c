@@ -14,7 +14,7 @@
 
 DECLARE_MODULE_V1
 (
-	"freenode/ns_extendchans", FALSE, _modinit, _moddeinit,
+	"freenode/ns_extendchans", false, _modinit, _moddeinit,
 	"$Id$",
 	"freenode <http://www.freenode.net>"
 );
@@ -55,14 +55,14 @@ void _moddeinit(void)
 	help_delentry(ns_helptree, "LISTEXTENDCHANS");
 }
 
-static void do_extendchans(user_t *u, boolean_t enable)
+static void do_extendchans(user_t *u, bool enable)
 {
 	sts(":%s MODE %s +*", nicksvs.nick, nicksvs.nick);
 	sts(":%s MODE %s %cu", nicksvs.nick, u->nick, enable ? '+' : '-');
 	sts(":%s MODE %s -*", nicksvs.nick, nicksvs.nick);
 }
 
-static void do_extendchans_all(myuser_t *mu, boolean_t enable)
+static void do_extendchans_all(myuser_t *mu, bool enable)
 {
 	node_t *n;
 	user_t *u;
@@ -116,7 +116,7 @@ static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[])
 		command_success_nodata(si, _("Disabled extendchans for \2%s\2."), mu->name);
 		snoop("EXTENDCHANS:OFF: \2%s\2 by \2%s\2", mu->name, get_oper_name(si));
 		logcommand(si, CMDLOG_ADMIN, "EXTENDCHANS %s OFF", mu->name);
-		do_extendchans_all(mu, FALSE);
+		do_extendchans_all(mu, false);
 	}
 	else if (!strcasecmp(parv[1], "ON"))
 	{
@@ -125,7 +125,7 @@ static void ns_cmd_extendchans(sourceinfo_t *si, int parc, char *parv[])
 				mu->name);
 		snoop("EXTENDCHANS:ON: \2%s\2 by \2%s\2", mu->name, get_oper_name(si));
 		logcommand(si, CMDLOG_ADMIN, "EXTENDCHANS %s ON", mu->name);
-		do_extendchans_all(mu, TRUE);
+		do_extendchans_all(mu, true);
 	}
 	else
 	{
@@ -176,7 +176,7 @@ static void extendchans_on_identify(void *vptr)
 	if (!(md = metadata_find(mu, "private:extendchans")))
 		return;
 
-	do_extendchans(u, TRUE);
+	do_extendchans(u, true);
 }
 
 /* vim:cinoptions=>s,e0,n0,f0,{0,}0,^0,=s,ps,t0,c3,+s,(2s,us,)20,*30,gs,hs
