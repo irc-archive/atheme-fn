@@ -38,10 +38,12 @@ static void nick_reg_notice(void *vptr)
 	myuser_t *mu = vptr;
 
 	myuser_notice(nicksvs.nick, mu, " ");
-	myuser_notice(nicksvs.nick, mu, "Freenode is a service of Peer-Directed Projects Center, an");
-	myuser_notice(nicksvs.nick, mu, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
+	myuser_notice(nicksvs.nick, mu, "freenode is a service of Peer-Directed Projects Center, a");
+	myuser_notice(nicksvs.nick, mu, "not-for-profit organisation registered in England and Wales.");
 	myuser_notice(nicksvs.nick, mu, "For frequently-asked questions about the network, please see the");
-	myuser_notice(nicksvs.nick, mu, "FAQ page (http://freenode.net/faq.shtml).");
+	myuser_notice(nicksvs.nick, mu, "FAQ page (http://freenode.net/faq.shtml). Should you wish to");
+	myuser_notice(nicksvs.nick, mu, "support the PDPC you can contribute to our current fundraiser at");
+	myuser_notice(nicksvs.nick, mu, "http://freenode.net/pdpc_donations.shtml.");
 }
 
 static void chan_reg_notice(void *vptr)
@@ -56,8 +58,8 @@ static void chan_reg_notice(void *vptr)
 	command_success_nodata(si, " ");
 	command_success_nodata(si, "Channel guidelines can be found on the freenode website");
 	command_success_nodata(si, "(http://freenode.net/channel_guidelines.shtml).");
-	command_success_nodata(si, "Freenode is a service of Peer-Directed Projects Center, an");
-	command_success_nodata(si, "IRS 501(c)(3) (tax-exempt) charitable and educational organization.");
+	command_success_nodata(si, "freenode is a service of Peer-Directed Projects Center, a");
+	command_success_nodata(si, "not-for-profit organisation registered in England and Wales.");
 	if (mc->name[1] != '#')
 	{
 		command_success_nodata(si, "This is a primary namespace channel as per\n"
