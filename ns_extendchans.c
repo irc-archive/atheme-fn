@@ -57,9 +57,7 @@ void _moddeinit(void)
 
 static void do_extendchans(user_t *u, bool enable)
 {
-	sts(":%s MODE %s +*", nicksvs.nick, nicksvs.nick);
-	sts(":%s MODE %s %cu", nicksvs.nick, u->nick, enable ? '+' : '-');
-	sts(":%s MODE %s -*", nicksvs.nick, nicksvs.nick);
+	sts(":%s ENCAP %s EXTENDCHANS %s", ME, u->server->name, CLIENT_NAME(u));
 }
 
 static void do_extendchans_all(myuser_t *mu, bool enable)
