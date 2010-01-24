@@ -35,7 +35,6 @@ SRCS = \
 	ns_extendchans.c	\
 	ns_regain.c	\
 	ns_set_unfiltered.c	\
-	os_greplog.c	\
 	regnotice.c
 
 # To compile your own modules, add them to SRCS or make blegh.so
