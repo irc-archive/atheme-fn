@@ -76,5 +76,5 @@ static void chan_reg_notice(void *vptr)
 
 	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
 	mc->mlock_off |= CMODE_SEC;
-	chanacs_change_simple(mc, si->smu, NULL, 0, CA_AUTOOP);
+	chanacs_change_simple(mc, &si->smu->ent, NULL, 0, CA_AUTOOP);
 }

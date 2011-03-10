@@ -20,23 +20,16 @@ DECLARE_MODULE_V1
 static void cs_cmd_access(sourceinfo_t *si, int parc, char *parv[]);
 
 command_t cs_access = { "ACCESS", "Manipulates channel access lists.",
-                         AC_NONE, 4, cs_cmd_access };
-
-list_t *cs_cmdtree;
-list_t *cs_helptree;
+                         AC_NONE, 4, cs_cmd_access, { .path = "help/cservice/access" } };
 
 void _modinit(module_t *m)
 {
-	MODULE_USE_SYMBOL(cs_cmdtree, "chanserv/main", "cs_cmdtree");
-	MODULE_USE_SYMBOL(cs_helptree, "chanserv/main", "cs_helptree");
-	help_addentry(cs_helptree, "ACCESS", "help/cservice/access", NULL);
-	command_add(&cs_access, cs_cmdtree);
+	service_named_bind_command("chanserv", &cs_access);
 }
 
 void _moddeinit()
 {
-	help_delentry(cs_helptree, "ACCESS");
-	command_delete(&cs_access, cs_cmdtree);
+	service_named_unbind_command("chanserv", &cs_access);
 }
 
 static void compat_cmd(sourceinfo_t *si, const char *cmdname, char *channel, char *arg1, char *arg2, char *arg3)
@@ -52,7 +45,7 @@ static void compat_cmd(sourceinfo_t *si, const char *cmdname, char *channel, cha
 	newparv[4] = NULL;
 	/* this assumes arg3!=NULL implies arg2!=NULL implies arg1!=NULL */
 	newparc = 1 + (arg1 != NULL) + (arg2 != NULL) + (arg3 != NULL);
-	cmd = command_find(si->service->cmdtree, cmdname);
+	cmd = command_find(si->service->commands, cmdname);
 	if (cmd != NULL)
 		command_exec(si->service, si, cmd, newparc, newparv);
 	else
@@ -86,7 +79,7 @@ static const char *get_template_name(mychan_t *mc, unsigned int level)
 			{
 				ss[r - q] = '\0';
 			}
-			if (level == flags_to_bitmask(ss, chanacs_flags, 0))
+			if (level == flags_to_bitmask(ss, 0))
 			{
 				strlcpy(flagname, p, sizeof flagname);
 				s = strchr(flagname, '=');
@@ -97,21 +90,12 @@ static const char *get_template_name(mychan_t *mc, unsigned int level)
 			p = r;
 		}
 	}
-	if (level == chansvs.ca_sop)
-		return "SOP";
-	if (level == chansvs.ca_aop)
-		return "AOP";
-	/* if vop==hop, prefer vop */
-	if (level == chansvs.ca_vop)
-		return "VOP";
-	if (level == chansvs.ca_hop)
-		return "HOP";
 	return NULL;
 }
 
 static void access_list(sourceinfo_t *si, mychan_t *mc, int parc, char *parv[])
 {
-	node_t *n;
+	mowgli_node_t *n;
 	chanacs_t *ca;
 	const char *str1, *str2;
 	int i = 1;
@@ -134,7 +118,7 @@ static void access_list(sourceinfo_t *si, mychan_t *mc, int parc, char *parv[])
 	command_success_nodata(si, _("Entry Nickname/Host          Flags"));
 	command_success_nodata(si, "----- ---------------------- -----");
 
-	LIST_FOREACH(n, mc->chanacs.head)
+	MOWGLI_LIST_FOREACH(n, mc->chanacs.head)
 	{
 		ca = n->data;
 		/* Change: don't show akicks */
@@ -143,10 +127,10 @@ static void access_list(sourceinfo_t *si, mychan_t *mc, int parc, char *parv[])
 		str1 = get_template_name(mc, ca->level);
 		str2 = ca->tmodified ? time_ago(ca->tmodified) : "?";
 		if (str1 != NULL)
-			command_success_nodata(si, _("%-5d %-22s %s (%s) [modified %s ago]"), i, ca->myuser ? ca->myuser->name : ca->host, bitmask_to_flags(ca->level, chanacs_flags), str1,
+			command_success_nodata(si, _("%-5d %-22s %s (%s) [modified %s ago]"), i, ca->entity ? ca->entity->name : ca->host, bitmask_to_flags(ca->level), str1,
 				str2);
 		else
-			command_success_nodata(si, _("%-5d %-22s %s [modified %s ago]"), i, ca->myuser ? ca->myuser->name : ca->host, bitmask_to_flags(ca->level, chanacs_flags),
+			command_success_nodata(si, _("%-5d %-22s %s [modified %s ago]"), i, ca->entity ? ca->entity->name : ca->host, bitmask_to_flags(ca->level),
 				str2);
 		i++;
 	}

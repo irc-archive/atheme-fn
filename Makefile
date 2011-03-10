@@ -32,9 +32,6 @@ default: all
 
 SRCS = \
 	cs_access.c		\
-	ns_extendchans.c	\
-	ns_regain.c	\
-	ns_set_unfiltered.c	\
 	regnotice.c
 
 # To compile your own modules, add them to SRCS or make blegh.so
