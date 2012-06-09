@@ -27,7 +27,7 @@ void _modinit(module_t *m)
 	hook_add_hook_first("channel_register", chan_reg_notice);
 }
 
-void _moddeinit(void)
+void _moddeinit(module_unload_intent_t intentvoid)
 {
 	hook_del_hook("user_register", nick_reg_notice);
 	hook_del_hook("channel_register", chan_reg_notice);
@@ -76,5 +76,6 @@ static void chan_reg_notice(void *vptr)
 
 	mc->mlock_on = CMODE_NOEXT | CMODE_TOPIC | mode_to_flag('c');
 	mc->mlock_off |= CMODE_SEC;
-	chanacs_change_simple(mc, &si->smu->ent, NULL, 0, CA_AUTOOP);
+	/* not needed now that we have founder_flags in config */
+	/*chanacs_change_simple(mc, &si->smu->ent, NULL, 0, CA_AUTOOP);*/
 }

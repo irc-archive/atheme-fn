@@ -37,7 +37,7 @@ void _modinit(module_t *m)
 	hook_add_first_channel_pick_successor(channel_pick_successor_hook);
 }
 
-void _moddeinit()
+void _moddeinit(module_unload_intent_t intent)
 {
 	hook_del_channel_pick_successor(channel_pick_successor_hook);
 }
