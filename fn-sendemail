@@ -1,19 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 
-server="$1"
-to="$2"
-if [ -z "$to" ]; then
-	exit 1
-fi
+install=$(readlink -f "$(dirname $0)/..")
+server=$(<${install}/etc/email-host.txt)
 
-subject="No subject"
-while read -r field rest; do
-	case "$field" in
-		"") break ;;
-		Subject:) subject="$rest" ;;
-	esac
-done
-case "$subject" in
-	*"'"*) subject="No subject"
-esac
-ssh "$server" mail -s "'$subject'" "$to"
+#subject="No subject"
+#while read -r field rest; do
+#       case "$field" in
+#               "") break ;;
+#               Subject:) subject="$rest" ;;
+#       esac
+#done
+#case "$subject" in
+#       *"'"*) subject="No subject"
+#esac
+ssh "$server" /usr/sbin/sendmail "$@"
+
