@@ -20,7 +20,7 @@ DECLARE_MODULE_V1
 static void cs_cmd_access(sourceinfo_t *si, int parc, char *parv[]);
 
 command_t cs_access = { "ACCESS", "Manipulates channel access lists.",
-                         AC_NONE, 4, cs_cmd_access, { .path = "help/freenode/cs_access" } };
+                         AC_NONE, 4, cs_cmd_access, { .path = "freenode/cs_access" } };
 
 void _modinit(module_t *m)
 {
